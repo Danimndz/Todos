@@ -19,12 +19,11 @@ export class TodosController {
   }
   @Post('/addTodo')
   async create(@Body('content') content: string, @Body('done') done: number) {
-    console.log(content, done);
-    return   this.todoService.create({ content, done });
+    return this.todoService.create({ content, done });
   }
 
   @Get('/getTodo/:id')
-  async get(@Param('id') id: number) {  
+  async get(@Param('id') id: number) {
     return this.todoService.get(id);
   }
   @Put('/updateTodo/:id')

@@ -23,7 +23,6 @@ let TodosController = class TodosController {
         return this.todoService.all();
     }
     async create(content, done) {
-        console.log(content, done);
         return this.todoService.create({ content, done });
     }
     async get(id) {
