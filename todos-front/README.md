@@ -1,4 +1,10 @@
 # Getting Started with Create React App
+## How does it work?
+  ### if you want to add a new task press the Add button and type your task.
+  ### If you want to edit a task cick on the name of the task.
+  ### You finished a task? double click on the blank space of the task to mark it as done.
+  ### You want to remove a task? click on the right delete icon.
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
