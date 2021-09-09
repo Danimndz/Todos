@@ -13,6 +13,7 @@ const app_service_1 = require("./app.service");
 const todos_module_1 = require("./todos/todos.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const todo_entity_1 = require("./todos/todo.entity");
+const folder_entity_1 = require("./folders/folder.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -25,7 +26,7 @@ AppModule = __decorate([
                 username: 'dani',
                 password: 'prueba1234',
                 database: 'to_dos2',
-                entities: [todo_entity_1.Todos],
+                entities: [todo_entity_1.Todos, folder_entity_1.Folder],
                 synchronize: true,
             }),
             todos_module_1.TodosModule,

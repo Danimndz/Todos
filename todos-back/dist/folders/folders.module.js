@@ -6,21 +6,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TodosModule = void 0;
+exports.FoldersModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const folder_entity_1 = require("../folders/folder.entity");
-const todo_entity_1 = require("./todo.entity");
-const todos_controller_1 = require("./todos.controller");
-const todos_service_1 = require("./todos.service");
-let TodosModule = class TodosModule {
+const todos_controller_1 = require("../todos/todos.controller");
+const todos_module_1 = require("../todos/todos.module");
+const folder_entity_1 = require("./folder.entity");
+const folders_controller_1 = require("./folders.controller");
+const folders_service_1 = require("./folders.service");
+let FoldersModule = class FoldersModule {
 };
-TodosModule = __decorate([
+FoldersModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([todo_entity_1.Todos, folder_entity_1.Folder])],
-        controllers: [todos_controller_1.TodosController],
-        providers: [todos_service_1.TodosService],
+        imports: [typeorm_1.TypeOrmModule.forFeature([folder_entity_1.Folder]), todos_module_1.TodosModule],
+        controllers: [folders_controller_1.FoldersController],
+        providers: [folders_service_1.FoldersService],
+        exports: [folders_service_1.FoldersService],
     })
-], TodosModule);
-exports.TodosModule = TodosModule;
-//# sourceMappingURL=todos.module.js.map
+], FoldersModule);
+exports.FoldersModule = FoldersModule;
+//# sourceMappingURL=folders.module.js.map

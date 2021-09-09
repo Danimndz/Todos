@@ -9,32 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Todos = void 0;
+exports.Folder = void 0;
 const typeorm_1 = require("typeorm");
-const folder_entity_1 = require("../folders/folder.entity");
-let Todos = class Todos {
+const todo_entity_1 = require("./todo.entity");
+let Folder = class Folder {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Todos.prototype, "idTodo", void 0);
+], Folder.prototype, "idFolder", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Todos.prototype, "content", void 0);
+], Folder.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Todos.prototype, "done", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)((type) => folder_entity_1.Folder, (folder) => folder.todos, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-    }),
-    __metadata("design:type", folder_entity_1.Folder)
-], Todos.prototype, "folder", void 0);
-Todos = __decorate([
+    (0, typeorm_1.OneToMany)((type) => todo_entity_1.Todos, (todo) => todo.folder),
+    __metadata("design:type", Array)
+], Folder.prototype, "todos", void 0);
+Folder = __decorate([
     (0, typeorm_1.Entity)()
-], Todos);
-exports.Todos = Todos;
-//# sourceMappingURL=todo.entity.js.map
+], Folder);
+exports.Folder = Folder;
+//# sourceMappingURL=folder.entity.js.map

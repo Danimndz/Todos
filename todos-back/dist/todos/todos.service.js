@@ -15,20 +15,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodosService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const folder_entity_1 = require("../folders/folder.entity");
 const typeorm_2 = require("typeorm");
 const todo_entity_1 = require("./todo.entity");
 let TodosService = class TodosService {
-    constructor(todosRepository) {
+    constructor(todosRepository, folderRepository) {
         this.todosRepository = todosRepository;
+        this.folderRepository = folderRepository;
     }
     async all() {
-        return this.todosRepository.find();
+        return this.todosRepository.find({ relations: ['folder'] });
     }
-    async create(data) {
-        return this.todosRepository.save(data);
+    async create(todo) {
+        return this.todosRepository.save(todo);
     }
     async get(id) {
         return this.todosRepository.findOne({ idTodo: id });
+    }
+    async getMany(id) {
+        let arr = [];
+        for (const x in id) {
+            let value = await this.todosRepository.findOne(id[x]);
+            arr.push(value);
+        }
+        return arr;
     }
     async update(id, data) {
         return this.todosRepository.update(id, data);
@@ -36,11 +46,28 @@ let TodosService = class TodosService {
     async remove(id) {
         return this.todosRepository.delete({ idTodo: id });
     }
+    async postF(folder) {
+        return this.folderRepository.save(folder);
+    }
+    async getAllF() {
+        return this.folderRepository.find({ relations: ['todos'] });
+    }
+    async getFolderId(id) {
+        return this.folderRepository.findOne({ idFolder: id });
+    }
+    async getFbyId(id) {
+        return this.folderRepository.findOne({ idFolder: id }, { relations: ['todos'] });
+    }
+    async DelF(id) {
+        return this.folderRepository.delete({ idFolder: id });
+    }
 };
 TodosService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(todo_entity_1.Todos)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(folder_entity_1.Folder)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], TodosService);
 exports.TodosService = TodosService;
 //# sourceMappingURL=todos.service.js.map

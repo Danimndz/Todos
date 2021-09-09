@@ -1,9 +1,7 @@
+import { Folder } from '../folders/folder.entity';
 export declare class Todos {
     idTodo: number;
     content: string;
     done: number;
-}
-export declare class Folders {
-    idFolder: number;
-    name: string;
+    folder: Folder;
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Folder } from '../folders/folder.entity';
 
 @Entity()
 export class Todos {
@@ -8,22 +9,10 @@ export class Todos {
   content: string;
   @Column()
   done: number;
-}
 
-@Entity()
-export class Folders {
-  @PrimaryGeneratedColumn()
-  idFolder: number;
-  @Column()
-  name: string;
+  @ManyToOne((type) => Folder, (folder: Folder) => folder.todos, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  folder: Folder;
 }
-
-// @Entity()
-// export class Folders_todos {
-//   @PrimaryGeneratedColumn()
-//   id: number;
-//   @Column()
-//   idTodo: number;
-//   @Column()
-//   idFolder: number;
-// }

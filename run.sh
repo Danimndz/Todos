@@ -24,7 +24,8 @@ if [-f /root/.my.cnf]; then
     echo "Granting ALL privileges on ${dbname} to ${username}!"
 	mysql -e "GRANT ALL PRIVILEGES ON ${dbname}.* TO '${username}'@'localhost';"
 	mysql -e "FLUSH PRIVILEGES;"
-	mysql -u${username} -p${userpass} -D${dbname} -e "CREATE TABLE todos(idTodo int NOT NULL AUTO_INCREMENT primary key,content varchar(255) NOT NULL,done int NOT NULL);"
+	mysql -u${username} -p${userpass} -D${dbname} -e "CREATE TABLE todos (idTodo int NOT NULL AUTO_INCREMENT,content varchar(255) NOT NULL,done int NOT NULL,folderIdFolder int DEFAULT NULL,PRIMARY KEY (idTodo),KEY FK_b323c671d0296e8607db6385b07 (folderIdFolder),CONSTRAINT FK_b323c671d0296e8607db6385b07 FOREIGN KEY (folderIdFolder) REFERENCES folder (idFolder) ON DELETE CASCADE ON UPDATE CASCADE)"
+	mysql -u${username} -p${userpass} -D${dbname} -e "CREATE TABLE folder (idFolder int NOT NULL AUTO_INCREMENT,name varchar(255) NOT NULL,PRIMARY KEY (idFolder))"
 	echo "Done..."
 	exit
 else
@@ -49,7 +50,8 @@ else
 	mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON ${dbname}.* TO '${username}'@'localhost';"
 	mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
 	echo "Creating table..."
-	mysql -u${username} -p${userpass} -D${dbname} -e "CREATE TABLE todos (idTodo int NOT NULL AUTO_INCREMENT primary key,content varchar(255) NOT NULL,done int NOT NULL);"
+	mysql -u${username} -p${userpass} -D${dbname} -e "CREATE TABLE todos (idTodo int NOT NULL AUTO_INCREMENT,content varchar(255) NOT NULL,done int NOT NULL,folderIdFolder int DEFAULT NULL,PRIMARY KEY (idTodo),KEY FK_b323c671d0296e8607db6385b07 (folderIdFolder),CONSTRAINT FK_b323c671d0296e8607db6385b07 FOREIGN KEY (folderIdFolder) REFERENCES folder (idFolder) ON DELETE CASCADE ON UPDATE CASCADE)"
+	mysql -u${username} -p${userpass} -D${dbname} -e "CREATE TABLE folder (idFolder int NOT NULL AUTO_INCREMENT,name varchar(255) NOT NULL,PRIMARY KEY (idFolder))"
 	echo "Done..."
 fi
 
@@ -64,3 +66,6 @@ npm start &
 cd ..
 cd todos-back
 nest start &
+
+
+

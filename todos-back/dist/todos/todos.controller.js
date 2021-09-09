@@ -14,16 +14,26 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TodosController = void 0;
 const common_1 = require("@nestjs/common");
+const folder_entity_1 = require("../folders/folder.entity");
+const todo_entity_1 = require("./todo.entity");
 const todos_service_1 = require("./todos.service");
 let TodosController = class TodosController {
     constructor(todoService) {
         this.todoService = todoService;
     }
     async all() {
+        const res = await this.todoService.all();
         return this.todoService.all();
     }
-    async create(content, done) {
-        return this.todoService.create({ content, done });
+    async create(content, folderId) {
+        const folder = folderId
+            ? await this.todoService.getFolderId(folderId)
+            : null;
+        const todo = new todo_entity_1.Todos();
+        todo.content = content;
+        todo.folder = folder;
+        todo.done = 0;
+        return this.todoService.create(todo);
     }
     async get(id) {
         return this.todoService.get(id);
@@ -39,6 +49,22 @@ let TodosController = class TodosController {
         await this.todoService.remove(id);
         return this.all();
     }
+    async postF(name, id) {
+        const todos = id ? await this.todoService.getMany(id) : null;
+        const folder = new folder_entity_1.Folder();
+        folder.name = name;
+        folder.todos = todos;
+        return this.todoService.postF(folder);
+    }
+    async getAllF() {
+        return this.todoService.getAllF();
+    }
+    async getFbyId(id) {
+        return this.todoService.getFbyId(id);
+    }
+    async delFolder(id) {
+        return this.todoService.DelF(id);
+    }
 };
 __decorate([
     (0, common_1.Get)('/getTodos'),
@@ -49,7 +75,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/addTodo'),
     __param(0, (0, common_1.Body)('content')),
-    __param(1, (0, common_1.Body)('done')),
+    __param(1, (0, common_1.Body)('folder')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", Promise)
@@ -77,6 +103,34 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], TodosController.prototype, "delete", null);
+__decorate([
+    (0, common_1.Post)('/postFolder'),
+    __param(0, (0, common_1.Body)('name')),
+    __param(1, (0, common_1.Body)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Array]),
+    __metadata("design:returntype", Promise)
+], TodosController.prototype, "postF", null);
+__decorate([
+    (0, common_1.Get)('/getFolders'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], TodosController.prototype, "getAllF", null);
+__decorate([
+    (0, common_1.Get)('/getFolder/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], TodosController.prototype, "getFbyId", null);
+__decorate([
+    (0, common_1.Delete)('/deleteFolder/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], TodosController.prototype, "delFolder", null);
 TodosController = __decorate([
     (0, common_1.Controller)(''),
     __metadata("design:paramtypes", [todos_service_1.TodosService])
