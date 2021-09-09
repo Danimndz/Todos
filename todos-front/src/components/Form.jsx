@@ -1,8 +1,10 @@
 import React from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo, updateTodo } from "../redux/actions";
 
 const Form = ({ showModal, where, todo, setShowModal }) => {
+  const [value, setValue] = useState("");
   const dispatch = useDispatch();
 
   const submitTodo = () => {
@@ -12,7 +14,9 @@ const Form = ({ showModal, where, todo, setShowModal }) => {
     };
     dispatch(addTodo(todo));
   };
-
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
   const updateTOdo = () => {
     let todo_ = {
       content: document.getElementById("todo_").value,
@@ -28,9 +32,19 @@ const Form = ({ showModal, where, todo, setShowModal }) => {
           <form className="add-form">
             <div className="form-control">
               <label htmlFor="task">To do:</label>
-              <input type="text" name="todo" id="todo" placeholder="..." />
+              <input
+                required="true"
+                type="text"
+                name="todo"
+                id="todo"
+                value={value}
+                onChange={handleChange}
+                placeholder="..."
+              />
             </div>
             <button
+              type="submit"
+              disabled={!value}
               onClick={submitTodo}
               className="btn btn-block"
             >
@@ -49,7 +63,7 @@ const Form = ({ showModal, where, todo, setShowModal }) => {
               />
             </div>
             <button
-              type="button"
+              type="submit"
               onClick={updateTOdo}
               className="btn btn-block"
             >
